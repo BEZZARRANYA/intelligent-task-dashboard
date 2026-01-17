@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-3">Recommend Employees for a Task</h2>
+
+<form method="POST" class="row g-2 align-items-end">
+  <div class="col-md-8">
+    <label class="form-label">Select Task</label>
+    <select class="form-select" name="task_id" required>
+      <option value="" disabled {% if not selected_task_id %}selected{% endif %}>Choose...</option>
+      {% for t in tasks %}
+        <option value="{{ t.task_id }}" {% if selected_task_id == t.task_id %}selected{% endif %}>
+          {{ t.task_id }} — {{ t.title }} ({{ t.category }})
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-primary w-100" type="submit">Recommend</button>
+  </div>
+</form>
+
+{% if task_obj %}
+  <div class="alert alert-info mt-4">
+    <strong>Task:</strong> {{ task_obj.title }} |
+    <strong>Required skills:</strong> {{ task_obj.required_skills }}
+  </div>
+{% endif %}
+
+{% if recs %}
+  <h4 class="mt-3">Top Recommendations</h4>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Employee</th>
+          <th>ID</th>
+          <th>Skills</th>
+          <th>Rating</th>
+          <th>Workload</th>
+          <th>Available</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for emp in recs %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ emp.name }}</td>
+          <td>{{ emp.employee_id }}</td>
+          <td>{{ emp.skills }}</td>
+          <td>{{ emp.avg_rating }}</td>
+          <td>{{ emp.current_workload }}</td>
+          <td>{{ emp.availability }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+
+{% endblock %}
+

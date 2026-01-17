@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Analytics</h2>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Accuracy Comparison</h5>
+        <canvas id="accChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">F1-score Comparison</h5>
+        <canvas id="f1Chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Tasks by Category</h5>
+        <canvas id="categoryChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Employee Workload</h5>
+        <canvas id="workloadChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const metrics = {{ metrics | tojson }};
+  const categoryCounts = {{ category_counts | tojson }};
+  const workload = {{ workload | tojson }};
+
+  // Model charts
+  const modelLabels = Object.keys(metrics);
+  const accData = modelLabels.map(m => metrics[m].accuracy);
+  const f1Data  = modelLabels.map(m => metrics[m].f1);
+
+  new Chart(document.getElementById("accChart"), {
+    type: "bar",
+    data: {
+      labels: modelLabels,
+      datasets: [{ label: "Accuracy", data: accData }]
+    }
+  });
+
+  new Chart(document.getElementById("f1Chart"), {
+    type: "bar",
+    data: {
+      labels: modelLabels,
+      datasets: [{ label: "F1-score", data: f1Data }]
+    }
+  });
+
+  // Tasks by category
+  const catLabels = Object.keys(categoryCounts);
+  const catValues = catLabels.map(k => categoryCounts[k]);
+
+  new Chart(document.getElementById("categoryChart"), {
+    type: "doughnut",
+    data: {
+      labels: catLabels,
+      datasets: [{ label: "Tasks", data: catValues }]
+    }
+  });
+
+  // Employee workload
+  const empLabels = Object.keys(workload);
+  const empValues = empLabels.map(k => workload[k]);
+
+  new Chart(document.getElementById("workloadChart"), {
+    type: "bar",
+    data: {
+      labels: empLabels,
+      datasets: [{ label: "Workload (hours)", data: empValues }]
+    },
+    options: {
+      scales: { x: { ticks: { autoSkip: false } } }
+    }
+  });
+</script>
+
+{% endblock %}
+

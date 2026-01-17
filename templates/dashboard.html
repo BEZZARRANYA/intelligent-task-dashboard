@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <!-- Title -->
+  <div class="p-4 mb-4 bg-light rounded-3">
+    <h1 class="display-6">Intelligent Task Dashboard</h1>
+  <p class="lead">
+     A lightweight web dashboard for task assignment, employee overview, and recommendation insights.
+  </p>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-4">
+
+    <!-- Employees -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">👩‍💼 Employees</h5>
+          <p class="card-text">
+            Total employees: <strong>{{ total_employees }}</strong>
+          </p>
+          <p class="card-text">
+            Available now: <strong>{{ available_employees }}</strong>
+          </p>
+          <a href="/recommend" class="btn btn-outline-primary btn-sm">
+            View Recommendations
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">📋 Tasks</h5>
+          <p class="card-text">
+            Total tasks: <strong>{{ total_tasks }}</strong>
+          </p>
+          <p class="card-text">
+            Categories: <strong>{{ categories | length }}</strong>
+          </p>
+          <a href="/analytics" class="btn btn-outline-primary btn-sm">
+            View Analytics
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🤖 Recommendations</h5>
+          <p class="card-text">
+            Get top-K employee recommendations for each task using a hybrid ML model.
+          </p>
+          <a href="/recommend" class="btn btn-primary btn-sm">
+            Recommend Employees
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+

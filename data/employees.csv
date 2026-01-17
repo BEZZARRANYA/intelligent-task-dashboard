@@ -1,0 +1,11 @@
+employee_id,name,skills,experience_years,avg_rating,current_workload,availability
+E01,Alice,"python,flask,ml",3,4.5,20,1
+E02,Bob,"java,spring,backend,sql",5,4.2,35,1
+E03,Charlie,"python,ml,data",2,4.0,10,1
+E04,Diana,"frontend,ui,react",4,4.3,40,0
+E05,Edward,"python,flask,backend",3,4.1,15,1
+E06,Fatima,"python,data,etl,sql",4,4.4,25,1
+E07,George,"security,backend,python",3,4.0,12,1
+E08,Hana,"react,frontend,ui,design",2,4.2,18,1
+E09,Ibrahim,"ml,python,recommender,data",5,4.6,30,1
+E10,Jiwoo,"sql,backend,optimization",6,4.5,28,1
