@@ -82,6 +82,14 @@ def analytics():
         category_counts=category_counts,
         workload=workload,
     )
+@app.route("/employees")
+def employees_page():
+    employees = load_employees("data/employees.csv")
+    return render_template("employees.html", employees=employees, title="Employees")
+@app.route("/tasks")
+def tasks_page():
+    tasks = load_tasks("data/tasks.csv")
+    return render_template("tasks.html", tasks=tasks, title="Tasks")
 
 if __name__ == "__main__":
     app.run(debug=True)

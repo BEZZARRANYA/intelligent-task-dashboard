@@ -10,6 +10,23 @@ A Flask-based intelligent task management dashboard with ML-powered task-to-empl
   - Tasks by category
   - Employee workload distribution
 
+## Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Employees
+![Employees](screenshots/employees.png)
+
+### Tasks
+![Tasks](screenshots/tasks.png)
+
+### Recommendation
+![Recommendation](screenshots/recommend.png)
+
+### Analytics
+![Analytics](screenshots/analytics.png)
+
 ## Tech Stack
 - Python, Flask
 - scikit-learn (for ML pipeline results)
