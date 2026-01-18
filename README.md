@@ -46,6 +46,23 @@ These insights help evaluate system behavior and support better task allocation 
 ### Analytics
 ![Analytics](screenshots/analytics.png)
 
+## 🔍 Intelligent Employee Recommendations
+
+The system recommends the best employees for a selected task using a
+**hybrid, explainable scoring model** based on:
+
+- Skill matching with task requirements
+- Employee performance rating
+- Current workload
+- Availability status
+
+Each recommendation includes a **normalized score (0–1)** and a
+clear explanation of *why* the employee was selected.
+
+### Example — Recommendation Results
+
+![Task Recommendation](screenshots/RecomendEmlpyees.png)
+
 ## Tech Stack
 - Python, Flask
 - scikit-learn (for ML pipeline results)
