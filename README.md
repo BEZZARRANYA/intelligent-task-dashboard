@@ -10,6 +10,25 @@ A Flask-based intelligent task management dashboard with ML-powered task-to-empl
   - Tasks by category
   - Employee workload distribution
 
+## Problem Statement
+In real organizations, assigning tasks manually can be subjective and inefficient. This project explores a practical decision-support dashboard that recommends suitable employees for tasks by combining skill matching, performance signals, and workload/availability constraints.
+
+## Recommendation Approach (Hybrid Scoring)
+For each task, the system ranks employees using:
+- **Skill match ratio** (required skills vs employee skills)
+- **Performance signals** (ratings / success patterns)
+- **Workload and availability constraints**
+
+The output is a **Top-K ranked list** that is easy to interpret and apply.
+
+## Analytics & Results
+The analytics module visualizes:
+- **Model comparison** (Accuracy / F1-score)
+- **Task distribution** by category
+- **Employee workload** distribution
+
+These insights help evaluate system behavior and support better task allocation decisions.
+
 ## Screenshots
 
 ### Dashboard
