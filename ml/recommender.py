@@ -1,42 +1,61 @@
-def recommend_employees(task, employees, top_k=3):
-    """
-    Recommend the best employees for a given task.
+# ml/recommender.py
 
-    Parameters:
-    - task (dict): task information including required_skills, priority, estimated_hours
-    - employees (list of dict): employee profiles with skills, rating, workload, availability
-    - top_k (int): number of employees to recommend
+from typing import Any, Dict, List
 
-    Returns:
-    - list of recommended employees
-    """
+def recommend_employees(task, employees, top_k=5):
+    results = []
 
-    scores = []
+    required_skills = set(task.get("required_skills", []))
 
     for emp in employees:
-        # Skill matching (simple overlap)
-        task_skills = set(task.get("required_skills", []))
-        emp_skills = set(emp.get("skills", []))
-        skill_score = len(task_skills & emp_skills)
+        reasons = []
+        score = 0.0
 
-        # Performance score
-        performance_score = emp.get("avg_rating", 0)
+        # ---- Normalize employee fields ----
+        employee = {
+            "id": emp.get("id", emp.get("employee_id", "")),
+            "name": emp.get("name", emp.get("employee_name", "")),
+            "skills": emp.get("skills", []),
+            "avg_rating": emp.get("avg_rating", emp.get("rating", 0)),
+            "current_workload": emp.get("current_workload", emp.get("workload", 0)),
+            "availability": emp.get("availability", 0),
+        }
 
-        # Workload penalty
-        workload_penalty = emp.get("current_workload", 0)
+        # 1. Skill match
+        emp_skills = set(employee["skills"])
+        matched_skills = required_skills & emp_skills
+        skill_ratio = len(matched_skills) / max(len(required_skills), 1)
 
-        # Availability bonus
-        availability_bonus = 1 if emp.get("availability", 0) else 0
+        score += 0.4 * skill_ratio
+        if matched_skills:
+            reasons.append(
+                f"Skills matched ({len(matched_skills)}/{len(required_skills)}): "
+                + ", ".join(sorted(matched_skills))
+            )
 
-        total_score = (
-            skill_score * 2
-            + performance_score
-            + availability_bonus
-            - workload_penalty * 0.1
-        )
+        # 2. Rating
+        rating_score = employee["avg_rating"] / 5.0
+        score += 0.3 * rating_score
+        if employee["avg_rating"] >= 4.0:
+            reasons.append(f"High rating ({employee['avg_rating']}/5)")
 
-        scores.append((total_score, emp))
+        # 3. Workload
+        workload_score = max(0, 1 - employee["current_workload"] / 40)
+        score += 0.2 * workload_score
+        if employee["current_workload"] <= 20:
+            reasons.append("Low workload")
 
-    scores.sort(reverse=True, key=lambda x: x[0])
+        # 4. Availability
+        if employee["availability"] == 1:
+            score += 0.1
+            reasons.append("Available")
 
-    return [emp for _, emp in scores[:top_k]]
+        results.append({
+            "employee": employee,
+            "score": round(score, 2),
+            "reasons": reasons
+        })
+
+    results.sort(key=lambda x: x["score"], reverse=True)
+    return results[:top_k]
+

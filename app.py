@@ -9,6 +9,37 @@ DATA_DIR = BASE_DIR / "data"
 
 app = Flask(__name__)
 
+def normalize_tasks(tasks):
+    """
+    Ensure every task has 'id', 'name', 'category', 'required_skills'.
+    Your CSV likely uses task_id/title/category/required_skills.
+    """
+    normalized = []
+    for t in tasks:
+        task_id = t.get("id") or t.get("task_id") or ""
+        name = t.get("name") or t.get("title") or t.get("task_name") or "Untitled Task"
+        category = t.get("category", "")
+        req = t.get("required_skills", [])
+
+        # required_skills might be a string in CSV: "python, ml"
+        if isinstance(req, str):
+            req_list = [s.strip() for s in req.replace(";", ",").split(",") if s.strip()]
+        else:
+            req_list = list(req)
+
+        normalized.append({
+            "id": task_id,
+            "name": name,
+            "category": category,
+            "required_skills": req_list
+        })
+    return normalized
+
+
+def get_task_by_id(tasks, task_id):
+    """Find task in list by its normalized 'id'."""
+    return next((t for t in tasks if t.get("id") == task_id), None)
+
 @app.route("/")
 def dashboard():
     employees = load_employees("data/employees.csv")
@@ -32,17 +63,22 @@ def dashboard():
     )
 
 @app.route("/recommend", methods=["GET", "POST"])
-def recommend():
-    employees = load_employees(DATA_DIR / "employees.csv")
-    tasks = load_tasks(DATA_DIR / "tasks.csv")
+def recommend_page():
+    tasks = load_tasks("data/tasks.csv")
+    employees = load_employees("data/employees.csv")
 
     selected_task_id = None
-    recs = None
     task_obj = None
+    recs = []
 
     if request.method == "POST":
         selected_task_id = request.form.get("task_id")
-        task_obj = next((t for t in tasks if t["task_id"] == selected_task_id), None)
+
+        task_obj = next(
+            (t for t in tasks if (t.get("id") or t.get("task_id")) == selected_task_id),
+            None
+        )
+
         if task_obj:
             recs = recommend_employees(task_obj, employees, top_k=5)
 
