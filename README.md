@@ -61,7 +61,7 @@ clear explanation of *why* the employee was selected.
 
 ### Example — Recommendation Results
 
-![Task Recommendation](screenshots/RecomendEmlpyees.png)
+![Task Recommendation](screenshots/recommend-employees.png)
 
 ## Tech Stack
 - Python, Flask
