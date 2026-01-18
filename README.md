@@ -59,9 +59,9 @@ The system recommends the best employees for a selected task using a
 Each recommendation includes a **normalized score (0–1)** and a
 clear explanation of *why* the employee was selected.
 
-### Example — Recommendation Results
+### Example — Recommendation Results (Explainable)
 
-![Task Recommendation](screenshots/recommend-employees.png)
+![Employee Recommendation with Explainability](screenshots/recommend-employees.png)
 
 ## Tech Stack
 - Python, Flask
